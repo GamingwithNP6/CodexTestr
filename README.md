@@ -71,3 +71,15 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+
+## GitHub Pages deployment (this repo)
+
+1. In GitHub, enable **Pages** and set **Build and deployment** source to **GitHub Actions**.
+2. Add these repository values before running the workflow:
+   - This repo's workflow is preconfigured with your shared Supabase URL and publishable key.
+   - (Recommended later) move these to GitHub Variables/Secrets if you rotate keys.
+3. Make sure Supabase Auth settings include your GitHub Pages URL in **Site URL** and **Redirect URLs**.
+4. Push to `main` (or `master`) to trigger deployment.
+
+After deploy, open: `https://<your-github-username>.github.io/<your-repo-name>/`
