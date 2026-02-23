@@ -89,10 +89,17 @@ const AdminDashboard = () => {
     fetchData();
   };
 
-  const archiveSingle = async (id: string) => {
-    await supabase.from("contact_submissions").update({ archived: true, updated_at: new Date().toISOString(), updated_by: user!.id }).eq("id", id);
-    await logAudit("archive", "submission", id, { archived: false }, { archived: true });
-    toast({ title: "Archived" });
+  const toggleArchiveSingle = async (id: string) => {
+    const sub = submissions.find((s) => s.id === id);
+    if (!sub) return;
+
+    const nextArchived = !sub.archived;
+    await supabase
+      .from("contact_submissions")
+      .update({ archived: nextArchived, updated_at: new Date().toISOString(), updated_by: user!.id })
+      .eq("id", id);
+    await logAudit(nextArchived ? "archive" : "unarchive", "submission", id, { archived: sub.archived }, { archived: nextArchived });
+    toast({ title: nextArchived ? "Archived" : "Unarchived" });
     fetchData();
   };
 
@@ -204,7 +211,14 @@ const AdminDashboard = () => {
                         <td className="p-3">
                           <div className="flex gap-1">
                             <Link to={`/admin/submissions/${s.id}`}><Button variant="ghost" size="icon"><Eye className="w-4 h-4" /></Button></Link>
-                            <Button variant="ghost" size="icon" onClick={() => archiveSingle(s.id)}><Archive className="w-4 h-4" /></Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => toggleArchiveSingle(s.id)}
+                              title={s.archived ? "Unarchive" : "Archive"}
+                            >
+                              <Archive className={`w-4 h-4 ${s.archived ? "text-secondary" : ""}`} />
+                            </Button>
                             <Button variant="ghost" size="icon" onClick={() => deleteSingle(s.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
                           </div>
                         </td>

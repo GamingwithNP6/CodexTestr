@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 
+const normalizePhone = (value: string) => value.replace(/\D/g, "");
+
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +19,26 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+
+    const input = identifier.trim();
+    const looksLikeEmail = input.includes("@");
+
+    let loginEmail = input;
+
+    if (!looksLikeEmail) {
+      const normalized = normalizePhone(input);
+      const { data: mappedEmail, error: lookupError } = await supabase.rpc("get_login_email_by_phone", { _phone: normalized });
+
+      if (lookupError || !mappedEmail) {
+        toast({ title: "Login failed", description: "Invalid credentials.", variant: "destructive" });
+        setLoading(false);
+        return;
+      }
+
+      loginEmail = mappedEmail;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password });
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
     } else {
@@ -31,11 +52,11 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="bg-card rounded-xl p-8 shadow-card-hover">
           <h1 className="font-heading text-2xl font-bold text-card-foreground mb-1">Welcome Back</h1>
-          <p className="text-muted-foreground mb-6 text-sm">Sign in to your account</p>
+          <p className="text-muted-foreground mb-6 text-sm">Sign in with email or phone number</p>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
+              <Label htmlFor="identifier">Email or Phone</Label>
+              <Input id="identifier" type="text" required value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="you@email.com or (505) 555-1234" />
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
