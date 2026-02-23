@@ -11,6 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -21,13 +22,19 @@ const Signup = () => {
       toast({ title: "Password too short", description: "Must be at least 6 characters.", variant: "destructive" });
       return;
     }
+
+    if (!phone.trim()) {
+      toast({ title: "Phone number required", description: "Please add a phone number to continue.", variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
       options: {
         emailRedirectTo: window.location.origin,
-        data: { display_name: displayName.trim() },
+        data: { display_name: displayName.trim(), phone: phone.trim() },
       },
     });
     if (error) {
@@ -49,6 +56,10 @@ const Signup = () => {
             <div>
               <Label htmlFor="name">Display Name</Label>
               <Input id="name" type="text" required maxLength={100} value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Your name" />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input id="phone" type="tel" required maxLength={20} value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(505) 555-1234" />
             </div>
             <div>
               <Label htmlFor="email">Email</Label>

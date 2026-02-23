@@ -120,19 +120,28 @@ export type Database = {
         Row: {
           created_at: string
           display_name: string
+          email: string | null
           id: string
+          phone: string | null
+          phone_normalized: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           display_name?: string
+          email?: string | null
           id: string
+          phone?: string | null
+          phone_normalized?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           display_name?: string
+          email?: string | null
           id?: string
+          phone?: string | null
+          phone_normalized?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -195,6 +204,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_login_email_by_phone: {
+        Args: {
+          _phone: string
+        }
+        Returns: string | null
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
