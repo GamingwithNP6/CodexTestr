@@ -81,7 +81,7 @@ const HeroSection = () => {
                 <Phone className="w-5 h-5" />
                 Call (505) 980-1923
               </a>
-              <a href="#contact-form" className="flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground font-heading font-semibold px-8 py-4 rounded-md hover:border-secondary hover:text-secondary transition-all text-lg">
+              <a href="/#contact-form" className="flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground font-heading font-semibold px-8 py-4 rounded-md hover:border-secondary hover:text-secondary transition-all text-lg">
                 Get Free Estimate
                 <ArrowRight className="w-5 h-5" />
               </a>
