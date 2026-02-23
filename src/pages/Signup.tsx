@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 
+const normalizePhone = (value: string) => value.replace(/\D/g, "");
+
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +27,11 @@ const Signup = () => {
 
     if (!phone.trim()) {
       toast({ title: "Phone number required", description: "Please add a phone number to continue.", variant: "destructive" });
+      return;
+    }
+
+    if (normalizePhone(phone).length < 10) {
+      toast({ title: "Invalid phone", description: "Please enter a valid phone number.", variant: "destructive" });
       return;
     }
 

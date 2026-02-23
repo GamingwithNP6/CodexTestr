@@ -35,6 +35,11 @@ const Settings = () => {
       return;
     }
 
+    if (normalizePhone(phone).length < 10) {
+      toast({ title: "Invalid phone", description: "Please enter a valid phone number.", variant: "destructive" });
+      return;
+    }
+
     setSaving(true);
     const nextPhone = phone.trim();
     const { error } = await supabase
