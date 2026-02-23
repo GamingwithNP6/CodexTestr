@@ -25,7 +25,7 @@ const FinalCTA = () => {
             Call (505) 980-1923
           </a>
           <a
-            href="#contact-form"
+            href="/#contact-form"
             className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground font-heading font-semibold px-10 py-5 rounded-md hover:border-secondary hover:text-secondary transition-all text-lg"
           >
             Request a Consultation

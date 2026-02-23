@@ -9,10 +9,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Services", href: "#services" },
-    { label: "Why Us", href: "#why-us" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Reviews", href: "#reviews" },
+    { label: "Services", href: "/#services" },
+    { label: "Why Us", href: "/#why-us" },
+    { label: "Gallery", href: "/#gallery" },
+    { label: "Reviews", href: "/#reviews" },
   ];
 
   const handleSignOut = async () => {
